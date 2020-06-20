@@ -1,5 +1,7 @@
 package com.example.myticket.Server;
 
+import com.example.myticket.Nguoidung;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -9,16 +11,21 @@ import retrofit2.http.POST;
 
 public interface DataClient {
 
-//post duwx lieeuj dangj text
     @FormUrlEncoded
     @POST("insert.php")
-    Call<String > InsertData(@Field ("TenND") String TenND
-                             ,@Field ("SDT") String SDT
-                              ,@Field ("CMT") String CMT
-                                ,@Field ("GioiTinh") String GioiTinh
-                               ,@Field ("MatKhau") String MatKhau);
+    Call<String> InsertData(@Field ("tennd") String tennd
+                            ,@Field ("sdt") String sdt
+                            ,@Field ("ngaysinh") String ngaysinh
+                            ,@Field ("cmt") String cmt
+                            ,@Field ("gioitinh") String gioitinh
+                            ,@Field ("matkhau") String matkhau);
 
     @FormUrlEncoded
     @POST("login.php")
-    Call<List>
+    Call<List<Nguoidung>> Logindata(@Field ("sdt" ) String sdt,
+                                    @Field ("matkhau") String matkhau);
+
 }
+
+
+

@@ -44,6 +44,15 @@
 
 
             />
+        <EditText
+            android:id="@+id/edtSDT"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/icon_phone"
+            android:drawablePadding="20dp"
+            android:hint="@string/sdt"
+            android:inputType="phone"
+            android:padding="15dp" />
 
 
         <EditText
@@ -101,15 +110,7 @@
 
         </RadioGroup>
 
-        <EditText
-            android:id="@+id/edtSDT"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/icon_phone"
-            android:drawablePadding="20dp"
-            android:hint="@string/sdt"
-            android:inputType="phone"
-            android:padding="15dp" />
+
 
         <EditText
             android:id="@+id/edtMatKhau"

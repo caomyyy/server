@@ -1,9 +1,7 @@
 package com.example.myticket;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,10 +10,12 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.File;
+import com.example.myticket.Server.APIUtils;
+import com.example.myticket.Server.DataClient;
 
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class DangKyActivity extends AppCompatActivity implements View.OnFocusChangeListener {
@@ -23,8 +23,8 @@ public class DangKyActivity extends AppCompatActivity implements View.OnFocusCha
      RadioGroup rgGioiTinh;
      Button btnOKDK,  btnDangNhapDK;
 
-    String TenND, SDT, CMT,NgaySinh,GioiTinh, MatKhau;
-    String realpath = "";
+    String tennd, sdt, cmt,ngaysinh,gioitinh, matkhau;
+
 
 
     @Override
@@ -58,31 +58,45 @@ public class DangKyActivity extends AppCompatActivity implements View.OnFocusCha
         btnOKDK.setOnClickListener(new View.OnClickListener (){
             @Override
             public void onClick(View v) {
-                TenND = edtHoTen.getText ().toString ();
-                SDT = edtSDT.getText ().toString ();
-                CMT = edtCMT.getText ().toString ();
-                NgaySinh = edtNgaySinh.getText ().toString ();
+                tennd = edtHoTen.getText ().toString ();
+                sdt = edtSDT.getText ().toString ();
+                cmt = edtCMT.getText ().toString ();
+                ngaysinh = edtNgaySinh.getText ().toString ();
 
                 switch (rgGioiTinh.getCheckedRadioButtonId()){
                     case R.id.rdNam:
-                        GioiTinh = "Nam"; break;
+                        gioitinh = "Nam"; break;
                     case R.id.rdNu:
-                        GioiTinh ="Nữ"; break;
+                        gioitinh ="Nữ"; break;
                     case R.id.rdKhac:
-                        GioiTinh ="Khác"; break;
+                        gioitinh ="Khác"; break;
                 };
-                MatKhau = edtMatKhau.getText ().toString ();
-                if (TenND.length () >0 && SDT.length () >0 && CMT.length () >0 && NgaySinh.length () >0 && GioiTinh.length () >0 && MatKhau.length () >0){
+                matkhau = edtMatKhau.getText ().toString ();
+                if (tennd.length () >0 && sdt.length () >0 && cmt.length () >0 && ngaysinh.length () >0 && gioitinh.length () >0 && matkhau.length () >0){
+                    DataClient insertdata = APIUtils.getData ();
+                    Call<String> callback = insertdata.InsertData (tennd, sdt,cmt, ngaysinh, gioitinh, matkhau);
+                    callback.enqueue (new Callback<String> ( ) {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            String result = response.body ();
+                            if (result.equals ("Thanh cong")){
+                                Toast.makeText (DangKyActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show ( );
+                                finish ();
+                            }
+                        }
 
-                    /*File file = new File (realpath);
-                    String file_path = file.getAbsolutePath ();
-                    String[] mangtenfile = file_path.split ("\\.");
-                    file_path = mangtenfile[0] + System.currentTimeMillis () + "." + mangtenfile[1];
-                    RequestBody requestBody = RequestBody.create (MediaType.parse ("mulltipart/form-data"),file);
-*/
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+
+                        }
+                    });
+
+
+
 
                 }else {
-                    Toast.makeText (DangNhapActivity.this, "Hãy nhập đủ thông tin");
+                    Toast.makeText (DangKyActivity.this, "Hãy nhâp đủ thông tin", Toast.LENGTH_SHORT).show ( );
+
                 }
 
 
